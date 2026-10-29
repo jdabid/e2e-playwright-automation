@@ -1,0 +1,52 @@
+name: E2E Playwright & Robot Framework CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  e2e-tests:
+    name: Run Headless E2E Tests (Playwright + Pytest)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Install Playwright Chromium Browser
+        run: |
+          playwright install --with-deps chromium
+
+      - name: Run Pytest Playwright E2E Suite
+        run: |
+          pytest
+
+      - name: Run Robot Framework Keyword-Driven Suite
+        run: |
+          robot --outputdir reports/robot robot_suites/
+
+      - name: Upload Test Reports & Failure Evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-and-robot-reports
+          path: |
+            reports/
+            test-results/
+          retention-days: 14
+

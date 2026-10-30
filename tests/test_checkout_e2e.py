@@ -51,11 +51,11 @@ class TestCheckoutE2E:
         "first_name,last_name,postal_code,expected_error",
         [
             ("", "Castro", "110111", ExpectedMessages.FIRST_NAME_REQUIRED_ERROR),
-            ("Cristian", "", "110111", ExpectedMessages.LAST_NAME_REQUIRED_ERROR),
-            ("Cristian", "Castro", "", ExpectedMessages.POSTAL_CODE_REQUIRED_ERROR),
+            ("David", "", "110111", ExpectedMessages.LAST_NAME_REQUIRED_ERROR),
+            ("David", "Castro", "", ExpectedMessages.POSTAL_CODE_REQUIRED_ERROR),
             ("", "", "", ExpectedMessages.FIRST_NAME_REQUIRED_ERROR),
             ("", "", "110111", ExpectedMessages.FIRST_NAME_REQUIRED_ERROR),
-            ("Cristian", "", "", ExpectedMessages.LAST_NAME_REQUIRED_ERROR),
+            ("David", "", "", ExpectedMessages.LAST_NAME_REQUIRED_ERROR),
         ],
     )
     def test_checkout_step_one_missing_field_validations(
